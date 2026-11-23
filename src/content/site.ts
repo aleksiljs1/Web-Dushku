@@ -22,7 +22,7 @@ export function navLinks(n: Content["nav"]) {
   ];
 }
 
-/** "Mobileri Dushku" → ["Mobileri", "Dushku"]: the last word gets the accent colour. */
+/** "Mobilieri Dushku" → ["Mobilieri", "Dushku"]: the last word gets the accent colour. */
 export function splitName(name: string): [string, string] {
   const parts = name.trim().split(/\s+/);
   if (parts.length < 2) return ["", parts[0] ?? ""];

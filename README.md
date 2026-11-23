@@ -1,6 +1,6 @@
-# Mobileri Dushku
+# Mobilieri Dushku
 
-Faqja e Mobileri Dushku: mobilje me porosi (dizenjim, prodhim, montim) dhe montim mobiljesh. Një faqe e vetme në shqip, e menduar para së gjithash për telefon, me një panel `/admin` ku pronari ndryshon tekstet, fotot dhe videot.
+Faqja e Mobilieri Dushku: mobilje me porosi (dizenjim, prodhim, montim) dhe montim mobiljesh. Një faqe e vetme në shqip, e menduar para së gjithash për telefon, me një panel `/admin` ku pronari ndryshon tekstet, fotot dhe videot.
 
 ## Teknologjia
 
@@ -43,7 +43,7 @@ Pa `BLOB_READ_WRITE_TOKEN`, paneli punon njësoj: tekstet ruhen te `.data/site.j
 
 ## Ku ndryshohet çfarë (në kod)
 
-- `src/content/defaults.ts`: të gjitha tekstet dhe fotot fillestare. **Emri i biznesit** (`brand.name`) është "Mobileri Dushku"; videoja promo e shkruan "Mobiljeri", ndryshojeni këtu ose nga paneli.
+- `src/content/defaults.ts`: të gjitha tekstet dhe fotot fillestare. **Emri i biznesit** (`brand.name`) është "Mobilieri Dushku"; si në TikTok (@mobilieri.dushku); mund të ndryshohet këtu ose nga paneli.
 - `public/media/`: fotot dhe videot e klientit (shih më poshtë).
 - `src/components/`: çdo seksion i faqes (Hero, Services, Work, Assembly, Process, Materials, Why, Contact, Footer).
 - `app/globals.css`: ngjyrat (lini, lisi, arra, bakri) dhe teksturat e drurit.

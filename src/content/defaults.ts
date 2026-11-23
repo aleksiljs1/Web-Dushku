@@ -4,11 +4,11 @@
 
 export const defaults = {
   brand: {
-    // The promo video spells it "Mobiljeri"; change it here or in /admin.
-    name: "Mobileri Dushku",
+    // Spelled as on TikTok (@mobilieri.dushku); editable in /admin.
+    name: "Mobilieri Dushku",
     tagline: "Mobilojmë sipas dëshirës dhe ëndrrave tuaja.",
     description:
-      "Mobileri Dushku: mobilje me porosi, të projektuara në 3D me masat tuaja, të prodhuara në punishte dhe të montuara me kujdes. Kuzhina, dollape, arredime.",
+      "Mobilieri Dushku: mobilje me porosi, të projektuara në 3D me masat tuaja, të prodhuara në punishte dhe të montuara me kujdes. Kuzhina, dollape, arredime.",
     services: "Dizenjim • Prodhim • Montim",
     categories: "Kuzhina • Dollape • Arredime",
   },
