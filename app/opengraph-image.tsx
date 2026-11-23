@@ -1,11 +1,15 @@
 import { ImageResponse } from "next/og";
+import { getContent } from "@/src/lib/content-store";
+import { splitName } from "@/src/content/site";
 
-export const alt = "Mobileri Dushku · Mobilojmë sipas dëshirës dhe ëndrrave tuaja";
+export const alt = "Mobilje me porosi dhe montim mobiljesh";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 // Link preview for WhatsApp, Facebook, Instagram DMs
-export default function OgImage() {
+export default async function OgImage() {
+  const { brand } = await getContent();
+  const [first, last] = splitName(brand.name);
   return new ImageResponse(
     (
       <div
@@ -22,13 +26,13 @@ export default function OgImage() {
       >
         <div style={{ display: "flex", alignItems: "center", gap: 18, fontSize: 40, fontWeight: 700 }}>
           <div style={{ width: 64, height: 64, borderRadius: 18, background: "#5b3a22", display: "flex" }} />
-          Mobileri <span style={{ color: "#b4582b" }}>Dushku</span>
+          {first} <span style={{ color: "#b4582b" }}>{last}</span>
         </div>
         <div style={{ display: "flex", flexDirection: "column" }}>
           <div style={{ fontSize: 84, lineHeight: 1.02, fontWeight: 600, letterSpacing: -2, maxWidth: 980 }}>
-            Mobilojmë sipas dëshirës dhe ëndrrave tuaja.
+            {brand.tagline}
           </div>
-          <div style={{ marginTop: 28, fontSize: 34, color: "#5b3a22" }}>Mobilje me porosi · Montim mobiljesh</div>
+          <div style={{ marginTop: 28, fontSize: 34, color: "#5b3a22" }}>{`${brand.services} · ${brand.categories}`}</div>
         </div>
         <div style={{ display: "flex", height: 18 }}>
           {["#9a6638", "#c08a55", "#5b3a22", "#b47a45", "#7a4e2c", "#d39a63"].map((c) => (

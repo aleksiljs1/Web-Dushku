@@ -8,7 +8,9 @@ import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
 import { useGSAP } from "@gsap/react";
 import Armchair from "./Armchair";
 import { ArrowDownIcon, PhoneIcon } from "./icons";
-import { telHref } from "@/src/content/site";
+import Emph from "./Emph";
+import { splitName, telHref } from "@/src/content/site";
+import type { Content } from "@/src/content/schema";
 import { prefersReducedMotion } from "@/src/lib/motion";
 
 gsap.registerPlugin(ScrollTrigger, SplitText, DrawSVGPlugin);
@@ -16,7 +18,10 @@ gsap.registerPlugin(ScrollTrigger, SplitText, DrawSVGPlugin);
 const planks = ["#9a6638", "#c08a55", "#5b3a22", "#b47a45", "#7a4e2c", "#d39a63"];
 const ticks = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200];
 
-export default function Hero() {
+type Props = { brand: Content["brand"]; contact: Content["contact"]; hero: Content["hero"] };
+
+export default function Hero({ brand, contact, hero }: Props) {
+  const [first, last] = splitName(brand.name);
   const root = useRef<HTMLElement>(null);
 
   useGSAP(
@@ -102,8 +107,8 @@ export default function Hero() {
         ))}
         <div className="absolute inset-0 flex items-center justify-center">
           <p className="flex gap-3 overflow-hidden font-serif text-5xl font-semibold text-paper md:text-7xl">
-            <span className="intro-word inline-block">Mobileri</span>
-            <span className="intro-word inline-block text-birch italic">Dushku</span>
+            {first && <span className="intro-word inline-block">{first}</span>}
+            <span className="intro-word inline-block text-birch italic">{last}</span>
           </p>
         </div>
       </div>
@@ -114,15 +119,15 @@ export default function Hero() {
             <span className="grid size-5 place-items-center rounded-full bg-oak/25">
               <span className="size-2 rounded-full bg-copper" />
             </span>
-            Mobilje me porosi · Montim
+            {hero.badge}
           </p>
 
           <h1 className="hero-title invisible font-serif text-[clamp(2.75rem,11.5vw,5.6rem)] leading-[0.98] font-medium tracking-[-0.03em] text-balance">
-            Mobilojmë sipas <em className="text-oak-deep">dëshirës</em> dhe <em className="text-copper">ëndrrave</em> tuaja.
+            <Emph text={hero.headline} classes={["text-oak-deep", "text-copper"]} />
           </h1>
 
           <p className="hero-in invisible mt-6 max-w-xl text-[1.08rem] leading-relaxed text-ink-soft md:text-xl">
-            Mobilje të projektuara dhe të prodhuara me masë për shtëpinë apo biznesin tuaj, dhe montim i kujdesshëm, deri te vida e fundit.
+            {hero.text}
           </p>
 
           <div className="hero-in invisible mt-8 flex flex-col gap-3 sm:flex-row">
@@ -130,16 +135,16 @@ export default function Hero() {
               href="#kontakt"
               className="group inline-flex items-center justify-center gap-3 rounded-full bg-ink px-7 py-4 text-base font-semibold text-paper transition-colors hover:bg-walnut"
             >
-              Kërkoni një ofertë
+              {hero.ctaPrimary}
               <span className="grid size-7 place-items-center rounded-full bg-copper transition-transform group-hover:rotate-[-45deg]">
                 <ArrowDownIcon className="size-3.5 -rotate-90" />
               </span>
             </a>
             <a
-              href={telHref}
+              href={telHref(contact)}
               className="inline-flex items-center justify-center gap-2.5 rounded-full border border-ink/20 bg-paper/60 px-7 py-4 text-base font-semibold transition-colors hover:border-ink/50"
             >
-              <PhoneIcon className="size-4" /> Telefononi tani
+              <PhoneIcon className="size-4" /> {hero.ctaCall}
             </a>
           </div>
         </div>
@@ -172,7 +177,7 @@ export default function Hero() {
               <span className="tape-count">240</span>
               <span className="text-lg"> cm</span>
             </span>
-            · çdo mobilje, me masat e hapësirës suaj
+            · {hero.measureNote}
           </p>
         </div>
       </div>

@@ -8,13 +8,11 @@ import { prefersReducedMotion } from "@/src/lib/motion";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const words = ["Kuzhina", "Garderoba", "Dhoma gjumi", "Sallone", "Dhoma fëmijësh", "Zyra", "Montim mobiljesh"];
-
-function Row() {
+function Row({ words }: { words: string[] }) {
   return (
     <div className="flex shrink-0 items-center">
       {words.map((w, i) => (
-        <span key={w} className="flex items-center">
+        <span key={`${i}-${w}`} className="flex items-center">
           <span className={`px-6 font-serif text-[clamp(2.2rem,8vw,4.5rem)] leading-none font-medium tracking-tight whitespace-nowrap ${i % 2 ? "italic text-oak-deep" : ""}`}>
             {w}
           </span>
@@ -28,7 +26,7 @@ function Row() {
 }
 
 // Runs on its own, speeds up and leans with the scroll
-export default function Marquee() {
+export default function Marquee({ words }: { words: string[] }) {
   const root = useRef<HTMLDivElement>(null);
 
   useGSAP(
@@ -56,8 +54,8 @@ export default function Marquee() {
   return (
     <div ref={root} className="relative overflow-hidden border-y border-line bg-paper py-7 md:py-10" aria-label="Çfarë punojmë">
       <div className="track flex w-max will-change-transform">
-        <Row />
-        <Row />
+        <Row words={words} />
+        <Row words={words} />
       </div>
     </div>
   );

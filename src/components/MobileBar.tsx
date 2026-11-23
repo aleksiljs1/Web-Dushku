@@ -3,9 +3,10 @@
 import { useEffect, useState } from "react";
 import { PhoneIcon, WhatsAppIcon } from "./icons";
 import { telHref, whatsappHref } from "@/src/content/site";
+import type { Content } from "@/src/content/schema";
 
 // Thumb-reach call buttons on phones: shown after the hero, hidden over the contact section
-export default function MobileBar() {
+export default function MobileBar({ contact, ui }: { contact: Content["contact"]; ui: Content["ui"] }) {
   const [pastHero, setPastHero] = useState(false);
   const [contactSeen, setContactSeen] = useState(false);
   const [footerSeen, setFooterSeen] = useState(false);
@@ -35,17 +36,17 @@ export default function MobileBar() {
       aria-hidden={!show}
     >
       <div className="mx-auto flex max-w-md gap-2 rounded-full border border-line bg-paper/90 p-1.5 shadow-[0_12px_40px_-12px_rgba(42,29,20,.45)] backdrop-blur-md">
-        <a href={telHref} tabIndex={show ? 0 : -1} className="flex flex-1 items-center justify-center gap-2 rounded-full bg-ink py-3.5 text-[0.95rem] font-semibold text-paper">
-          <PhoneIcon className="size-4" /> Telefononi
+        <a href={telHref(contact)} tabIndex={show ? 0 : -1} className="flex flex-1 items-center justify-center gap-2 rounded-full bg-ink py-3.5 text-[0.95rem] font-semibold text-paper">
+          <PhoneIcon className="size-4" /> {ui.callShort}
         </a>
         <a
-          href={whatsappHref()}
+          href={whatsappHref(contact)}
           target="_blank"
           rel="noopener noreferrer"
           tabIndex={show ? 0 : -1}
           className="flex flex-1 items-center justify-center gap-2 rounded-full bg-[#1f9e50] py-3.5 text-[0.95rem] font-semibold text-white"
         >
-          <WhatsAppIcon className="size-4" /> WhatsApp
+          <WhatsAppIcon className="size-4" /> {ui.whatsapp}
         </a>
       </div>
     </div>

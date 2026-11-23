@@ -31,3 +31,60 @@ export function ArrowDownIcon({ className = "size-4" }: P) {
     </svg>
   );
 }
+
+export function TikTokIcon({ className = "size-5" }: P) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden>
+      <path d="M16.6 3c.3 2.2 1.6 3.6 3.9 3.8v3a7 7 0 0 1-3.8-1.2v6.1a5.7 5.7 0 1 1-5.7-5.7l.9.1v3.1a2.7 2.7 0 1 0 1.8 2.5V3h2.9Z" />
+    </svg>
+  );
+}
+
+export function InstagramIcon({ className = "size-5" }: P) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className={className} aria-hidden>
+      <rect x="3" y="3" width="18" height="18" rx="5" />
+      <circle cx="12" cy="12" r="4" />
+      <circle cx="17.5" cy="6.5" r="0.6" fill="currentColor" />
+    </svg>
+  );
+}
+
+export function FacebookIcon({ className = "size-5" }: P) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden>
+      <path d="M13.5 21v-7.5h2.6l.4-3h-3V8.6c0-.9.3-1.5 1.5-1.5h1.6V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.8 1.4-3.8 3.9v2.3H8v3h2.5V21h3Z" />
+    </svg>
+  );
+}
+
+export function SocialIcon({ name, className }: P & { name: "tiktok" | "instagram" | "facebook" }) {
+  if (name === "tiktok") return <TikTokIcon className={className} />;
+  if (name === "instagram") return <InstagramIcon className={className} />;
+  return <FacebookIcon className={className} />;
+}
+
+export function PlayIcon({ className = "size-5" }: P) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden>
+      <path d="M8 5.5v13a1 1 0 0 0 1.5.9l10.2-6.5a1 1 0 0 0 0-1.8L9.5 4.6A1 1 0 0 0 8 5.5Z" />
+    </svg>
+  );
+}
+
+export function SoundIcon({ muted, className = "size-5" }: P & { muted: boolean }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden>
+      <path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor" />
+      {muted ? <path d="m16 9.5 5 5M21 9.5l-5 5" /> : <path d="M16 9a4.5 4.5 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11" />}
+    </svg>
+  );
+}
+
+export function ExpandIcon({ className = "size-5" }: P) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden>
+      <path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" />
+    </svg>
+  );
+}

@@ -1,32 +1,38 @@
-// Business details shown across the page. Replace the placeholders marked TODO
-// with the client's real details before going live.
+// Small helpers shared by the sections. The words themselves live in
+// `defaults.ts` (and whatever the admin panel stores over them).
+import type { Content } from "./schema";
 
-export const site = {
-  name: "Mobileri Dushku",
-  tagline: "Mobilojmë sipas dëshirës dhe ëndrrave tuaja.",
-  description:
-    "Mobileri Dushku: mobilje me porosi të projektuara dhe të prodhuara me masë, si dhe montim i kujdesshëm i mobiljeve.",
+export type Contact = Content["contact"];
 
-  // TODO: real phone number, shown as written and dialled as the digits in `phone`
-  phoneDisplay: "+355 6X XXX XXXX",
-  phone: "+355000000000",
-  // TODO: WhatsApp number in international format, digits only
-  whatsapp: "355000000000",
-  // TODO: city / area they serve
-  location: "Shqipëri",
-};
+export const telHref = (c: Contact) => `tel:${c.phone}`;
 
-export const telHref = `tel:${site.phone}`;
-
-export function whatsappHref(text?: string) {
-  const base = `https://wa.me/${site.whatsapp}`;
+export function whatsappHref(c: Contact, text?: string) {
+  const base = `https://wa.me/${c.whatsapp}`;
   return text ? `${base}?text=${encodeURIComponent(text)}` : base;
 }
 
-export const nav = [
-  { href: "#sherbimet", label: "Shërbimet" },
-  { href: "#montimi", label: "Montimi" },
-  { href: "#procesi", label: "Si punojmë" },
-  { href: "#materialet", label: "Materialet" },
-  { href: "#kontakt", label: "Kontakt" },
-];
+export function navLinks(n: Content["nav"]) {
+  return [
+    { href: "#sherbimet", label: n.services },
+    { href: "#punimet", label: n.work },
+    { href: "#montimi", label: n.assembly },
+    { href: "#procesi", label: n.process },
+    { href: "#materialet", label: n.materials },
+    { href: "#kontakt", label: n.contact },
+  ];
+}
+
+/** "Mobileri Dushku" → ["Mobileri", "Dushku"]: the last word gets the accent colour. */
+export function splitName(name: string): [string, string] {
+  const parts = name.trim().split(/\s+/);
+  if (parts.length < 2) return ["", parts[0] ?? ""];
+  return [parts.slice(0, -1).join(" "), parts[parts.length - 1]];
+}
+
+export function socialLinks(c: Contact) {
+  return [
+    { key: "tiktok", href: c.tiktok, label: "TikTok" },
+    { key: "instagram", href: c.instagram, label: "Instagram" },
+    { key: "facebook", href: c.facebook, label: "Facebook" },
+  ].filter((s) => s.href) as { key: "tiktok" | "instagram" | "facebook"; href: string; label: string }[];
+}

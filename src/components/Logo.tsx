@@ -1,5 +1,8 @@
+import { splitName } from "@/src/content/site";
+
 // Wordmark: a little dovetail joint as the mark, name set in Fraunces
-export default function Logo({ className = "" }: { className?: string }) {
+export default function Logo({ name, className = "" }: { name: string; className?: string }) {
+  const [first, last] = splitName(name);
   return (
     <span className={`inline-flex items-center gap-2.5 ${className}`}>
       <svg viewBox="0 0 32 32" className="size-8 shrink-0" aria-hidden>
@@ -8,7 +11,8 @@ export default function Logo({ className = "" }: { className?: string }) {
         <path d="M12.5 14h7l1 4h-9z" fill="var(--oak)" />
       </svg>
       <span className="font-serif text-[1.15rem] leading-none font-semibold tracking-tight">
-        Mobileri <span className="text-copper italic">Dushku</span>
+        {first && `${first} `}
+        <span className="text-copper italic">{last}</span>
       </span>
     </span>
   );

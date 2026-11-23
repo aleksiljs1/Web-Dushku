@@ -4,17 +4,14 @@ import { useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import Emph from "./Emph";
 import { prefersReducedMotion } from "@/src/lib/motion";
+import type { Content } from "@/src/content/schema";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const steps = [
-  { title: "Pjesët mbërrijnë", body: "Çdo pjesë kontrollohet dhe renditet para se të nisim." },
-  { title: "Struktura", body: "Anët, kapaku dhe fundi, në vijë të drejtë dhe në nivel." },
-  { title: "Raftet dhe këmbët", body: "Gjithçka e shtrënguar mirë, që të mbajë peshë për vite." },
-  { title: "Dyert", body: "Të rregulluara që të mbyllen butë, drejt dhe pa zhurmë." },
-  { title: "Gati!", body: "Pastrojmë vendin dhe jua lëmë gati për t’u përdorur." },
-];
+// Five stages, matching the `step` numbers on the parts below
+const STAGES = 5;
 
 // Each part: where it sits when assembled, and where it floats when exploded.
 // `step` is the stage it flies home in.
@@ -78,7 +75,8 @@ const parts: Part[] = [
   },
 ];
 
-export default function Assembly() {
+export default function Assembly({ assembly }: { assembly: Content["assembly"] }) {
+  const steps = assembly.steps.slice(0, STAGES);
   const root = useRef<HTMLElement>(null);
   const [active, setActive] = useState(0);
 
@@ -86,7 +84,7 @@ export default function Assembly() {
     () => {
       const q = gsap.utils.selector(root);
       if (prefersReducedMotion()) {
-        setActive(steps.length - 1);
+        setActive(STAGES - 1);
         return;
       }
 
@@ -95,7 +93,7 @@ export default function Assembly() {
       gsap.set(q(".screwdot"), { scale: 0, transformOrigin: "50% 50%" });
 
       const tl = gsap.timeline({ defaults: { ease: "power3.inOut" } });
-      steps.forEach((_, s) => {
+      Array.from({ length: STAGES }, (_, s) => s).forEach((s) => {
         const ids = parts.filter((p) => p.step === s).map((p) => `[data-part="${p.id}"]`);
         tl.addLabel(`s${s}`);
         tl.to(q(ids.join(",")), { x: 0, y: 0, rotate: 0, duration: 1, stagger: 0.12 });
@@ -113,7 +111,7 @@ export default function Assembly() {
         animation: tl,
         invalidateOnRefresh: true,
         onUpdate(self) {
-          const idx = Math.min(steps.length - 1, Math.floor(self.progress * steps.length * 0.999));
+          const idx = Math.min(STAGES - 1, Math.floor(self.progress * STAGES * 0.999));
           setActive((a) => (a === idx ? a : idx));
           const bar = q(".progress")[0] as HTMLElement | undefined;
           if (bar) bar.style.transform = `scaleX(${self.progress})`;
@@ -128,22 +126,22 @@ export default function Assembly() {
       <div className="pin relative flex min-h-[100svh] flex-col overflow-hidden pt-[calc(env(safe-area-inset-top)+4.5rem)] pb-[calc(env(safe-area-inset-bottom)+6rem)] md:pt-24 lg:pb-8">
         <div className="mx-auto grid w-full max-w-7xl flex-1 items-center gap-4 px-5 md:px-8 lg:grid-cols-2 lg:gap-16">
           <div className="lg:order-2">
-            <p className="mb-3 text-xs font-semibold tracking-[0.25em] text-copper uppercase">Montimi, pjesë pas pjese</p>
+            <p className="mb-3 text-xs font-semibold tracking-[0.25em] text-copper uppercase">{assembly.eyebrow}</p>
             <h2 className="font-serif text-[clamp(2rem,7.5vw,4rem)] leading-[1.02] font-medium tracking-[-0.025em]">
-              Nga kutia te mobilja, <em className="text-oak-deep">pa asnjë shqetësim.</em>
+              <Emph text={assembly.title} />
             </h2>
 
             <ol className="mt-6 hidden space-y-1 lg:block">
               {steps.map((s, i) => (
                 <li
-                  key={s.title}
+                  key={i}
                   className={`flex gap-4 rounded-2xl px-4 py-3 transition-all duration-500 ${i === active ? "bg-paper shadow-sm" : "opacity-45"}`}
                 >
                   <span className="font-serif text-lg text-copper italic tabular-nums">0{i + 1}</span>
                   <span>
                     <span className="block font-semibold">{s.title}</span>
                     <span className={`block overflow-hidden text-ink-soft transition-all duration-500 ${i === active ? "mt-1 max-h-20" : "max-h-0"}`}>
-                      {s.body}
+                      {s.text}
                     </span>
                   </span>
                 </li>
@@ -187,7 +185,7 @@ export default function Assembly() {
             <span className="font-serif text-2xl text-copper italic tabular-nums">0{active + 1}</span>
             <span className="text-xl font-semibold">{steps[active].title}</span>
           </div>
-          <p className="mt-1 min-h-[3rem] text-ink-soft">{steps[active].body}</p>
+          <p className="mt-1 min-h-[3rem] text-ink-soft">{steps[active].text}</p>
         </div>
 
         <div className="mx-auto mt-4 w-full max-w-7xl px-5 md:px-8">

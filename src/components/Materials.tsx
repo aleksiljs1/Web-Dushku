@@ -3,18 +3,22 @@
 import { useRef, useState } from "react";
 import { gsap } from "gsap";
 import Reveal from "./Reveal";
+import Emph from "./Emph";
 import { prefersReducedMotion } from "@/src/lib/motion";
+import type { Content } from "@/src/content/schema";
 
-const finishes = [
-  { name: "Arrë", note: "E ngrohtë dhe e thellë", body: "#6b4429", front: "#7a4e2c", handle: "#d8b46a" },
-  { name: "Lis", note: "Natyrale, me fije të dukshme", body: "#b98552", front: "#c79562", handle: "#2a1d14" },
-  { name: "Ah", note: "E çelur dhe e qetë", body: "#d9b183", front: "#e2bf93", handle: "#5b3a22" },
-  { name: "E bardhë mat", note: "E pastër, moderne", body: "#e9e4da", front: "#f4f0e8", handle: "#b48a4a" },
-  { name: "Antracit", note: "Elegante dhe e fortë", body: "#3a3a3c", front: "#47474a", handle: "#c9a36a" },
-  { name: "Gjelbër ulliri", note: "Për pak guxim", body: "#5d6646", front: "#6b7552", handle: "#e0c08a" },
+// Colours stay in code; names and notes come from the content (same order)
+const colors = [
+  { body: "#6b4429", front: "#7a4e2c", handle: "#d8b46a" },
+  { body: "#b98552", front: "#c79562", handle: "#2a1d14" },
+  { body: "#d9b183", front: "#e2bf93", handle: "#5b3a22" },
+  { body: "#e9e4da", front: "#f4f0e8", handle: "#b48a4a" },
+  { body: "#3a3a3c", front: "#47474a", handle: "#c9a36a" },
+  { body: "#5d6646", front: "#6b7552", handle: "#e0c08a" },
 ];
 
-export default function Materials() {
+export default function Materials({ materials }: { materials: Content["materials"] }) {
+  const finishes = colors.map((c, i) => ({ ...c, name: materials.finishes[i]?.name ?? "", note: materials.finishes[i]?.note ?? "" }));
   const root = useRef<HTMLElement>(null);
   const [current, setCurrent] = useState(0);
   function pick(i: number) {
@@ -39,13 +43,12 @@ export default function Materials() {
       <div className="wood-grain pointer-events-none absolute inset-0 opacity-[0.07]" />
       <div className="relative mx-auto max-w-7xl px-5 md:px-8">
         <div className="max-w-2xl">
-          <p className="mb-4 text-xs font-semibold tracking-[0.25em] text-copper-soft uppercase">Materialet</p>
+          <p className="mb-4 text-xs font-semibold tracking-[0.25em] text-copper-soft uppercase">{materials.eyebrow}</p>
           <Reveal as="h2" className="font-serif text-[clamp(2.4rem,8.5vw,4.5rem)] leading-[1.02] font-medium tracking-[-0.025em]">
-            Zgjidhni ngjyrën. Ne kujdesemi për pjesën tjetër.
+            <Emph text={materials.title} />
           </Reveal>
           <Reveal as="p" mode="fade" className="mt-6 text-lg leading-relaxed text-paper/70">
-            Provojeni vetë: prekni një ngjyrë dhe shihni si ndryshon komoja. Këto janë vetëm disa shembuj. Bashkë zgjedhim materialin,
-            ngjyrën dhe dorezat që ju pëlqejnë.
+            {materials.text}
           </Reveal>
         </div>
 
@@ -97,7 +100,7 @@ export default function Materials() {
           <div role="radiogroup" aria-label="Ngjyra e mobiljes" className="grid grid-cols-6 gap-2 sm:gap-3 lg:grid-cols-3 lg:gap-4">
             {finishes.map((fin, i) => (
               <button
-                key={fin.name}
+                key={i}
                 type="button"
                 role="radio"
                 aria-checked={i === current}

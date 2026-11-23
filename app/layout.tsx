@@ -1,11 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import { Fraunces, Manrope } from "next/font/google";
-import SmoothScroll from "@/src/components/SmoothScroll";
-import Header from "@/src/components/Header";
-import Footer from "@/src/components/Footer";
-import MobileBar from "@/src/components/MobileBar";
-import { site } from "@/src/content/site";
+import { getContent } from "@/src/lib/content-store";
 import "./globals.css";
 
 const fraunces = Fraunces({
@@ -20,18 +16,21 @@ const manrope = Manrope({
   subsets: ["latin", "latin-ext"],
 });
 
-export const metadata: Metadata = {
-  title: { default: `${site.name} · Mobilje me porosi dhe montim`, template: `%s · ${site.name}` },
-  description: site.description,
-  openGraph: {
-    title: `${site.name} · ${site.tagline}`,
-    description: site.description,
-    locale: "sq_AL",
-    type: "website",
-    siteName: site.name,
-  },
-  twitter: { card: "summary_large_image" },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { brand } = await getContent();
+  return {
+    title: { default: `${brand.name} · Mobilje me porosi dhe montim`, template: `%s · ${brand.name}` },
+    description: brand.description,
+    openGraph: {
+      title: `${brand.name} · ${brand.tagline}`,
+      description: brand.description,
+      locale: "sq_AL",
+      type: "website",
+      siteName: brand.name,
+    },
+    twitter: { card: "summary_large_image" },
+  };
+}
 
 // Draw under the notch and tint the browser bars linen to match the page
 export const viewport: Viewport = {
@@ -46,11 +45,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <noscript>
           <style>{`.invisible{visibility:visible!important}#intro{display:none}`}</style>
         </noscript>
-        <SmoothScroll />
-        <Header />
-        <main className="flex-1">{children}</main>
-        <Footer />
-        <MobileBar />
+        {children}
       </body>
     </html>
   );

@@ -7,12 +7,12 @@ import { useGSAP } from "@gsap/react";
 import Reveal from "./Reveal";
 import Wardrobe from "./Wardrobe";
 import { ArrowIcon } from "./icons";
+import Emph from "./Emph";
 import { prefersReducedMotion } from "@/src/lib/motion";
+import type { Content } from "@/src/content/schema";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const custom = ["Kuzhina", "Garderoba", "Dhoma gjumi", "Sallone", "Dhoma fëmijësh", "Zyra & dyqane"];
-const assembly = ["Mobilje të blera gati", "Kuzhina & garderoba", "Çmontim dhe rimontim", "Rregullim dyersh e sirtarësh"];
 
 function Tools() {
   // Allen key turning a screw home, with a spirit level settling under it
@@ -45,7 +45,8 @@ function Tools() {
   );
 }
 
-export default function Services() {
+export default function Services({ services }: { services: Content["services"] }) {
+  const { custom, assembly } = services;
   const root = useRef<HTMLElement>(null);
 
   useGSAP(
@@ -98,13 +99,13 @@ export default function Services() {
     <section ref={root} id="sherbimet" className="mx-auto max-w-7xl px-5 py-24 md:px-8 md:py-36">
       <div className="mb-12 md:mb-20 md:flex md:items-end md:justify-between md:gap-10">
         <div>
-          <p className="mb-4 text-xs font-semibold tracking-[0.25em] text-copper uppercase">Shërbimet</p>
+          <p className="mb-4 text-xs font-semibold tracking-[0.25em] text-copper uppercase">{services.eyebrow}</p>
           <Reveal as="h2" className="max-w-2xl font-serif text-[clamp(2.4rem,8.5vw,4.5rem)] leading-[1.02] font-medium tracking-[-0.025em]">
-            Dy shërbime, i njëjti kujdes për çdo detaj.
+            <Emph text={services.title} />
           </Reveal>
         </div>
         <Reveal as="p" mode="fade" className="mt-5 max-w-sm text-lg leading-relaxed text-ink-soft md:mt-0">
-          Nga ideja e parë deri te vida e fundit, punojmë me ju hap pas hapi.
+          {services.intro}
         </Reveal>
       </div>
 
@@ -114,20 +115,18 @@ export default function Services() {
             <span className="absolute top-5 left-6 font-serif text-sm text-ink-mute italic md:left-10">01</span>
             <Wardrobe />
           </div>
-          <h3 className="font-serif text-3xl font-medium tracking-tight md:text-4xl">Mobilim me porosi</h3>
-          <p className="mt-4 text-[1.05rem] leading-relaxed text-ink-soft">
-            Ju na tregoni si e ëndërroni. Ne e projektojmë, e masim dhe e prodhojmë sipas hapësirës suaj. Asgjë e gatshme: gjithçka
-            e menduar për ju.
-          </p>
+          {custom.kicker && <p className="mb-2 text-xs font-semibold tracking-[0.2em] text-copper uppercase">{custom.kicker}</p>}
+          <h3 className="font-serif text-3xl font-medium tracking-tight md:text-4xl">{custom.title}</h3>
+          <p className="mt-4 text-[1.05rem] leading-relaxed text-ink-soft">{custom.text}</p>
           <ul className="mt-6 flex flex-wrap gap-2">
-            {custom.map((c) => (
-              <li key={c} className="chip rounded-full border border-line bg-linen px-3.5 py-1.5 text-sm text-ink-soft">
+            {custom.chips.map((c, i) => (
+              <li key={`${i}-${c}`} className="chip rounded-full border border-line bg-linen px-3.5 py-1.5 text-sm text-ink-soft">
                 {c}
               </li>
             ))}
           </ul>
           <a href="#kontakt" className="mt-8 inline-flex items-center gap-2 font-semibold text-copper">
-            Na tregoni idenë tuaj <ArrowIcon className="size-4 transition-transform group-hover:translate-x-1" />
+            {custom.link} <ArrowIcon className="size-4 transition-transform group-hover:translate-x-1" />
           </a>
         </article>
 
@@ -136,20 +135,18 @@ export default function Services() {
             <span className="absolute top-5 left-6 font-serif text-sm text-paper/60 italic md:left-10">02</span>
             <Tools />
           </div>
-          <h3 className="font-serif text-3xl font-medium tracking-tight md:text-4xl">Montim mobiljesh</h3>
-          <p className="mt-4 text-[1.05rem] leading-relaxed text-paper/75">
-            Keni blerë mobilje, por s&apos;keni kohë apo vegla? I montojmë shpejt, pastër dhe me kujdes, që gjithçka të qëndrojë
-            drejt për vite me radhë.
-          </p>
+          {assembly.kicker && <p className="mb-2 text-xs font-semibold tracking-[0.2em] text-copper-soft uppercase">{assembly.kicker}</p>}
+          <h3 className="font-serif text-3xl font-medium tracking-tight md:text-4xl">{assembly.title}</h3>
+          <p className="mt-4 text-[1.05rem] leading-relaxed text-paper/75">{assembly.text}</p>
           <ul className="mt-6 flex flex-wrap gap-2">
-            {assembly.map((c) => (
-              <li key={c} className="chip rounded-full border border-paper/15 bg-paper/5 px-3.5 py-1.5 text-sm text-paper/80">
+            {assembly.chips.map((c, i) => (
+              <li key={`${i}-${c}`} className="chip rounded-full border border-paper/15 bg-paper/5 px-3.5 py-1.5 text-sm text-paper/80">
                 {c}
               </li>
             ))}
           </ul>
           <a href="#montimi" className="mt-8 inline-flex items-center gap-2 font-semibold text-copper-soft">
-            Shihni si punojmë <ArrowIcon className="size-4 transition-transform group-hover:translate-x-1" />
+            {assembly.link} <ArrowIcon className="size-4 transition-transform group-hover:translate-x-1" />
           </a>
         </article>
       </div>
